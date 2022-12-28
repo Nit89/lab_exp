@@ -1,0 +1,268 @@
+ByteStuffing
+
+#include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
+
+int main(){
+    char ans[100],inputArr[100],start[10],end[10];
+    strcpy(start,"dlestx");
+    strcpy(end,"dleetx");
+    strcpy(inputArr,"");
+    printf("Enter the input string");
+    scanf("%s",inputArr);
+    int i,j,m;
+    strcpy(ans,start);
+      m=strlen(inputArr);
+    for(i=0,j=6;i<m+1;i++,j++){
+        if((inputArr[i]=='d')&&(inputArr[i]=='l')&&(inputArr[i]=='e')){
+            ans[j]='d';j++;
+            ans[j]='l';j++;
+            ans[j]='e';j++;
+            i=i+3;
+        }    
+        ans[j]=inputArr[i];
+    }
+    j++;
+    ans[j]='\0';
+    strcat(ans,end);
+    printf("Stuffed string is %s",ans);
+    return 0;
+}
+
+========================================================================
+
+
+BitStuffing
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main()
+{
+char a[100],b[100];
+int i,j,k,count,n,flag;
+strcpy(a,""); strcpy(b,"");
+while(1){
+flag=0;
+printf("Enter input frame (0's & 1's only):");
+scanf("%s",a);
+n = strlen(a);
+for(i=0; i<n; i++){
+if ((a[i]=='0') || (a[i]=='1' )){
+continue;
+}
+else{
+flag=1; break;
+}
+}
+
+if(flag){
+printf ("Invalid Input frame\n:");
+exit (0);
+}
+else{
+
+ break;
+ }
+}
+i=0; j=0; flag=0;
+while(i<n)
+{
+if (a[i]=='1')
+{
+b[j] = a[i]; count=1;
+for(k=i+1; a[k]=='1' && k<n && count<5; k++)
+{
+j++;
+b[j]=a[k];
+count++;
+if(count==5)
+{
+j++;
+b[j]='0'; count=0;
+}
+i=k;
+}
+if(k<n){
+if(a[k]=='0'){
+j++;
+b[j] = a[k];
+}
+i=k;
+ }
+else{ flag=1; break; }
+}
+else{
+b[j] = a[i];
+i++;
+j++;
+ }
+ }
+j++; b[j] = '\0';
+printf("\nAfter stuffing the frame is:");
+printf("%s\n",b);
+return 0;
+}
+
+========================================================================
+
+Dijkstra algo
+
+#include<stdio.h>
+#include<stdlib.h>
+#define INFINITY 9999
+#define MAX 10
+ 
+void dijkstra(int G[MAX][MAX],int n,int startnode);
+ 
+int main()
+{
+int G[MAX][MAX],i,j,n,u;
+printf("Enter no. of vertices:");
+scanf("%d",&n);
+printf("\nEnter the adjacency matrix:\n");
+for(i=0;i<n;i++)
+for(j=0;j<n;j++)
+scanf("%d",&G[i][j]);
+printf("\nEnter the starting node:");
+scanf("%d",&u);
+dijkstra(G,n,u);
+return 0;
+}
+ 
+void dijkstra(int G[MAX][MAX],int n,int startnode)
+{
+ 
+int cost[MAX][MAX],distance[MAX],pred[MAX];
+int visited[MAX],count,mindistance,nextnode,i,j;
+//pred[] stores the predecessor of each node
+//count gives the number of nodes seen so far
+//create the cost matrix
+for(i=0;i<n;i++)
+for(j=0;j<n;j++)
+if(G[i][j]==0)
+cost[i][j]=INFINITY;
+else
+cost[i][j]=G[i][j];
+//initialize pred[],distance[] and visited[]
+for(i=0;i<n;i++)
+{
+distance[i]=cost[startnode][i];
+pred[i]=startnode;
+visited[i]=0;
+}
+distance[startnode]=0;
+visited[startnode]=1;
+count=1;
+while(count<n-1)
+{
+mindistance=INFINITY;
+//nextnode gives the node at minimum distance
+for(i=0;i<n;i++)
+if(distance[i]<mindistance&&!visited[i])
+{
+mindistance=distance[i];
+nextnode=i;
+}
+//check if a better path exists through nextnode
+visited[nextnode]=1;
+for(i=0;i<n;i++)
+if(!visited[i])
+if(mindistance+cost[nextnode][i]<distance[i])
+{
+distance[i]=mindistance+cost[nextnode][i];
+pred[i]=nextnode;
+}
+count++;
+}
+ 
+//print the path and distance of each node
+for(i=0;i<n;i++)
+if(i!=startnode)
+{
+printf("\nDistance of node%d=%d",i,distance[i]);
+printf("\nPath=%d",i);
+j=i;
+do
+{
+j=pred[j];
+printf("<-%d",j);
+}while(j!=startnode);
+}
+}
+
+========================================================================
+
+
+stop and wait
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main()
+{
+int i,j,noframes;
+int x,x1,x2;
+x1=10; i=1; j=1;
+printf("\n Enter number of frames\t:");
+scanf("%d",&noframes);
+while(noframes>0)
+{
+printf("\n Sending frame %d", i);
+x = rand()%15;
+if(x%5 == 0){
+for(x2=1; x2<2; x2++)
+{
+printf("\n Waiting for %d seconds\n",x2);
+sleep(x2);
+}
+printf(" Sending frame %d\n",i);
+x = rand()%10;
+}
+printf("\n Acknowledgement received for frame %d\n",j);
+noframes = noframes-1;
+i++;
+j++;
+}
+printf("\n End of stop and wait protocol");
+return 0;
+}
+
+========================================================================
+
+sliding window protocol
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main()
+{
+int w,i,f,frames[50];
+printf("Enter window size: ");
+scanf("%d",&w);
+printf("\nEnter number of frames to transmit: ");
+scanf("%d", &f);
+printf("\nEnter %d frames: ",f);
+for(i=1; i<=f; i++)
+scanf("%d",&frames[i]);
+printf("\nWith sliding window protocol the frames will be sent in the following manner
+(assuming no corruption of frames)\n\n");
+printf("After sending %d frames at each stage sender waits for acknowledgement sent by the receiver\n\n",w);
+for(i=1;i<=f;i++)
+ {
+if(i%w==0)
+{
+printf("%d\n",frames[i]);
+printf("Acknowledgement of above frames sent is received by sender\n\n");}
+else
+printf("%d ",frames[i]);
+}
+if(f%w!=0)
+printf("\nAcknowledgement of above frames sent is received by sender\n");
+return 0;
+}
+
+
